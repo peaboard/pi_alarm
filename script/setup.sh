@@ -5,6 +5,12 @@
 # --
 
 # Required Python Libraries
+
+if [ "$(id -u)" != "0" ]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+
 python_libs=(
     'flask==0.10.1'             # The web framework we're using
     'Mako==0.9.0'               # Mako templates for the site
