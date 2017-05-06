@@ -2,6 +2,8 @@ import datetime
 import os
 import pickle
 import random
+#import pygame
+import subprocess
 
 from app import app
 from flask import flash, redirect, get_flashed_messages, request
@@ -10,6 +12,11 @@ from mako.lookup import TemplateLookup
 from scheduler import Scheduler
 
 PROJECT_DIR = os.path.abspath( os.path.dirname(os.path.realpath(__file__)) )
+
+print os.getcwd()
+dir_link = os.getcwd()
+#pygame.mixer.init()
+#pygame.mixer.music.load("rain_start.wav")
 
 template_lookup = TemplateLookup(
     directories=[PROJECT_DIR + '/templates'],
@@ -34,6 +41,9 @@ current_day = datetime.date.today() + datetime.timedelta(days=1)
 light_driver = LightDriver()
 scheduler = Scheduler()
 
+global radio_flag
+radio_flag = 0
+
 # -- Routes
 @app.route('/')
 @app.route('/index')
@@ -51,7 +61,7 @@ def set_alarm():
     scheduler.schedule_alarm(weekday, hour, minute)
 
     day = get_current_day_name()
-    flash("Alarm for %s set!" % day, "message")
+    flash("Alarm for %s set! At " % day, "message")
     return redirect(('/' + day).lower())
 
 def render_day(day):
@@ -187,4 +197,41 @@ def troll_katie():
         sleep(0.13)
         turn_light_off()
         sleep(0.13)
+    return redirect(('/' + get_current_day_name()).lower())
+
+@app.route('/sound')
+def yolo_def():
+    #pygame.mixer.music.play()
+    #while pygame.mixer.music.get_busy() == True:
+    #    continue
+    from time import sleep
+    print os.getcwd()
+    cmd = ['mpc', 'update']
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    cmd = ['mpc', 'clear']
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    # You will need the alarm file in the respective folder of your system for mpc to be able to add it
+    cmd = ['mpc', 'add', 'rain_start.mp3']
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    cmd = ['mpc', 'play']
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    sleep(5)
+    cmd = ['mpc', 'stop']
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    return redirect(('/' + get_current_day_name()).lower())
+
+@app.route('/radio_on')
+def radio_on():
+    cmd = ['mpc', 'clear']
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    cmd = ['mpc', 'add', 'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p']
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    cmd = ['mpc', 'play']
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    return redirect(('/' + get_current_day_name()).lower())
+
+@app.route('/radio_off')
+def radio_off():
+    cmd = ['mpc', 'stop']
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
     return redirect(('/' + get_current_day_name()).lower())
