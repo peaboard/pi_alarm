@@ -4,22 +4,27 @@
   spacing for the navbar
 </%doc>
 <div class="jumbotron homepage-jumbotron">
-  <h1>Good Morning Wake Up Happy Katie Sunshine Alarm!</h1>
-  <p class="lead">Your husband's love starts your day on a bright and shining note!</p>
+<!--  <h1>Good Morning Wake Up Happy Katie Sunshine Alarm!</h1> -->
+  <h1>Good Morning Wake Up Happy Sunshine Alarm!</h1>
+<!--  <p class="lead">Your husband's love starts your day on a bright and shining note!</p> -->
   <hr/>
   <p>Set alarm for ${day}</p>
   <form action="/set_alarm", method="POST">
     <input name="time" type="time" value="${time}"/>
-    <input type="submit" class="btn btn-primary btn-lg"></input>
+    <input type="submit" value="Submit" class="btn btn-default btn-lg"></input>
   </form>
 </div><!-- /jumbotron -->
 <hr/>
 <div class="row" style="text-align:center;">
-  <h2>Light Controls</h2>
+  <h2>Controls</h2>
   <div class="container">
     <div class="col-md-4 col-md-offset-4" style="margin-top:10px;">
       <a href="/on" class="btn btn-success btn-lg">ON!</a>
       <a href="/off" class="btn btn-danger btn-lg">OFF!</a>
+      <a href="/sound" class="btn btn-primary btn-lg">Sound!</a>
+      <div class="col-xs-12" style="height:15px;"></div>
+      <a href="/radio_on" class="btn btn-primary btn-lg">Radio ON</a>
+      <a href="/radio_off" class="btn btn-primary btn-lg">Radio OFF</a>
     </div>
   </div>
 </div>
