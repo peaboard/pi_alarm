@@ -2,7 +2,6 @@ import datetime
 import os
 import pickle
 import random
-#import pygame
 import subprocess
 
 from app import app
@@ -15,8 +14,6 @@ PROJECT_DIR = os.path.abspath( os.path.dirname(os.path.realpath(__file__)) )
 
 print os.getcwd()
 dir_link = os.getcwd()
-#pygame.mixer.init()
-#pygame.mixer.music.load("rain_start.wav")
 
 template_lookup = TemplateLookup(
     directories=[PROJECT_DIR + '/templates'],
@@ -41,9 +38,6 @@ current_day = datetime.date.today() + datetime.timedelta(days=1)
 light_driver = LightDriver()
 scheduler = Scheduler()
 
-global radio_flag
-radio_flag = 0
-
 # -- Routes
 @app.route('/')
 @app.route('/index')
@@ -61,7 +55,7 @@ def set_alarm():
     scheduler.schedule_alarm(weekday, hour, minute)
 
     day = get_current_day_name()
-    flash("Alarm for %s set! At " % day, "message")
+    flash("Alarm for %s set!" % day, "message")
     return redirect(('/' + day).lower())
 
 def render_day(day):
@@ -199,6 +193,10 @@ def troll_katie():
         sleep(0.13)
     return redirect(('/' + get_current_day_name()).lower())
 
+"""
+Made initially for testing sound.
+Use it now and then to check if everything working properly.
+"""
 @app.route('/sound')
 def yolo_def():
     #pygame.mixer.music.play()
@@ -220,6 +218,11 @@ def yolo_def():
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
     return redirect(('/' + get_current_day_name()).lower())
 
+"""
+TODO:   Add options for radio stations and give user choice for selecting.
+        Volume control.
+"""
+
 @app.route('/radio_on')
 def radio_on():
     cmd = ['mpc', 'clear']
@@ -234,4 +237,9 @@ def radio_on():
 def radio_off():
     cmd = ['mpc', 'stop']
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    return redirect(('/' + get_current_day_name()).lower())
+
+@app.route('/clear_alarm')
+def clear_alarm():
+    scheduler.clear_all_alarm()
     return redirect(('/' + get_current_day_name()).lower())

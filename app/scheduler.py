@@ -21,7 +21,7 @@ class Scheduler(object):
             + ...
             + 6 is saturday
         """
-        jobs = self.cron.find_comment("ON for %s" % weekday)
+        jobs = self.cron.find_comment("Alarm for %s" % weekday)
         if not jobs:
             return ""
 
@@ -46,36 +46,43 @@ class Scheduler(object):
         """
 
         # -- First, unschedule the alarm for that day
-        self.cron.remove_all(comment="ON for %s" % weekday)
-        self.cron.remove_all(comment="OFF for %s" % weekday)
+        #self.cron.remove_all(comment="ON for %s" % weekday)
+        #self.cron.remove_all(comment="OFF for %s" % weekday)
+
+        self.cron.remove_all(comment="Alarm for %s" % weekday)
 
         # -- Second, create new jobs
         current_dir = os.path.abspath(\
                 os.path.dirname(os.path.realpath(__file__)) )
-        on_job = self.cron.new(command=current_dir+'/on.py',
-                comment = "ON for %s" % weekday)
-        off_job = self.cron.new(command=current_dir+'/off.py',
-                comment = "OFF for %s" % weekday)
+        on_job = self.cron.new(command=current_dir+'/pir_alarm.py',
+                comment = "Alarm for %s" % weekday)
+        #off_job = self.cron.new(command=current_dir+'/off.py',
+        #        comment = "OFF for %s" % weekday)
 
         # -- Third, calculate the alarm times
         alarm_time = datetime.datetime(2014, 1, 1, int(hour), int(minute))
-        duration = app.config['ALARM_DURATION']
+        #duration = app.config['ALARM_DURATION']
         on_time = alarm_time.strftime("%H:%M")
-        off_time = (alarm_time + \
-                datetime.timedelta(minutes=int(duration))).strftime("%H:%M")
+        #off_time = (alarm_time + \
+        #        datetime.timedelta(minutes=int(duration))).strftime("%H:%M")
 
         on_hour, on_minute = on_time.split(':')
-        off_hour, off_minute = off_time.split(':')
+        #off_hour, off_minute = off_time.split(':')
 
         # -- Finally, add the new job to the crontab
         on_job.minute.on(on_minute)
         on_job.hour.on(on_hour)
         on_job.dow.on(weekday)
 
-        off_job.minute.on(off_minute)
-        off_job.hour.on(off_hour)
-        off_job.dow.on(weekday)
+        #off_job.minute.on(off_minute)
+        #off_job.hour.on(off_hour)
+        #off_job.dow.on(weekday)
 
         self.cron.write()
 
         return True
+
+    def clear_all_alarm(self):
+        for day in [0, 1, 2, 3, 4, 5, 6] :
+            self.cron.remove_all(comment="ON for %s" % day)
+            self.cron.remove_all(comment="OFF for %s" % day)

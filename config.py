@@ -3,7 +3,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 # -- Alarm Settings
 PIN = 10                       # Pin to which the PowerSwitch Tail is connected
-ALARM_DURATION = 15            # Light duration in minutes
+ALARM_DURATION = 1            # Light duration in minutes
+PIR = 4 					   # Pin to which PIR sensor or Switch is connected
 
 # -- General Config
 DEBUG = True
@@ -12,6 +13,15 @@ BASIC_AUTH_FORCE = False
 BASIC_AUTH_USERNAME = 'alarm'
 BASIC_AUTH_PASSWORD = 'password'
 
+'''
+This throws an error as the pir_alarm(Actual file that runs the alarm)
+searches for it in its own directory (app)
+For now copied fortunes to both this directory and the app directory,
+but it is a very cheap workaround.
+The fortunes function should be in a separate file. Not config.
+'''
+currdir = os.getcwd()
+print(currdir)
 msg = open("fortunes", "r")
 MESSAGES = []
 fortunes = msg.read()
