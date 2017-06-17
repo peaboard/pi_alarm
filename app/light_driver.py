@@ -17,6 +17,7 @@ class LightDriver(object):
     def __init__(self, pin=None):
         if not pin:
             self.pin = app.config['PIN']
+            print("LightDriver Pin %s" %self.pin)
 
     def get_pin(self):
         return self.pin
@@ -46,7 +47,7 @@ class LightDriver(object):
                   a current or not going to the specified pin.
         """
         try:
-            GPIO.setmode(GPIO.BOARD)
+            GPIO.setmode(GPIO.BCM)
             GPIO.setup(pin, GPIO.OUT)
             GPIO.output(pin, signal)
 

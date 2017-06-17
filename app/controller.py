@@ -15,6 +15,9 @@ PROJECT_DIR = os.path.abspath( os.path.dirname(os.path.realpath(__file__)) )
 print os.getcwd()
 dir_link = os.getcwd()
 
+# Get name of alarm file from config
+alarm_file = app.config['ALARM_FILE_NAME']
+
 template_lookup = TemplateLookup(
     directories=[PROJECT_DIR + '/templates'],
     module_directory='/tmp/mako_modules')
@@ -209,7 +212,7 @@ def yolo_def():
     cmd = ['mpc', 'clear']
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
     # You will need the alarm file in the respective folder of your system for mpc to be able to add it
-    cmd = ['mpc', 'add', 'rain_start.mp3']
+    cmd = ['mpc', 'add', alarm_file]
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
     cmd = ['mpc', 'play']
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)

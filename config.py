@@ -2,9 +2,16 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # -- Alarm Settings
-PIN = 10                       # Pin to which the PowerSwitch Tail is connected
-ALARM_DURATION = 1            # Light duration in minutes
-PIR = 4 					   # Pin to which PIR sensor or Switch is connected
+# Alarm will sound for alarm duration or PIR sense whichever occures first.
+
+# -- Pin Configuration as per BCM Model
+PIN = 15                      # Pin to which the PowerSwitch Tail is connected
+ALARM_DURATION = 0.1            # Alarm Sound duration in minutes
+#LIGHT_DURATION = 10			  # Light switch duration in minutes.
+RADIO_DURATION = 15			  # Radio duration in minutes
+PIR = 4 					  # Pin to which PIR sensor or Switch is connected
+
+ALARM_FILE_NAME = 'alarmclock_tone_electronic.mp3'
 
 # -- General Config
 DEBUG = True
