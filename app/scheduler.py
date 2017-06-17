@@ -30,6 +30,13 @@ class Scheduler(object):
             return "%s:%s" % (str(job.hour).zfill(2),
                     str(job.minute).zfill(2))
 
+
+    """
+    Changed method of calling alarm.
+    Now only single alarm file which handles everything like delays and light
+    Cron only calls that file
+    """
+
     def schedule_alarm(self, weekday, hour, minute):
         """
         Weekday: Integer from 0 to 6
@@ -56,8 +63,6 @@ class Scheduler(object):
                 os.path.dirname(os.path.realpath(__file__)) )
         on_job = self.cron.new(command=current_dir+'/pir_alarm.py',
                 comment = "Alarm for %s" % weekday)
-        #off_job = self.cron.new(command=current_dir+'/off.py',
-        #        comment = "OFF for %s" % weekday)
 
         # -- Third, calculate the alarm times
         alarm_time = datetime.datetime(2014, 1, 1, int(hour), int(minute))

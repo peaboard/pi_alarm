@@ -202,9 +202,6 @@ Use it now and then to check if everything working properly.
 """
 @app.route('/sound')
 def yolo_def():
-    #pygame.mixer.music.play()
-    #while pygame.mixer.music.get_busy() == True:
-    #    continue
     from time import sleep
     print os.getcwd()
     cmd = ['mpc', 'update']
